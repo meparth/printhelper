@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>LetsPrint</title>
+    <link rel="shortcut icon" type="image/png" href="monster.png"/>
+
+    <script>
+
+      function selectAll(id){
+        window.setTimeout(function (){
+          document.getElementById(id).focus();
+          document.getElementById(id).select();
+        }, 0);
+
+
+      }
+
+      function calculate() {
+        var card = document.getElementById("instructions");
+
+        var x = document.getElementById("pages");
+
+        var start = x.elements[0].value;
+        var end = x.elements[1].value;
+        var blank = x.elements[2].value;
+
+        var res = +end - +start + 1;
+        res = Math.ceil(res/4);
+        document.getElementById("npage").innerHTML = res;
+
+        var front = "";
+        for (var i = +start ; i <= +end ; i+=4) {
+          // front = front+end;
+
+          if(i > +start) front = front + ",";
+          (+i + 3 > +end) ? front = front + blank : front = front + (i+3);
+          front = front + "," + i;
+
+
+        }
+
+        document.getElementById("pages_front").innerHTML = front;
+
+        var rev = "";
+        for (var i = +start + 1 ; i <= +end ; i+=4) {
+          // front = front+end;
+
+          if(i > +start + 1) rev = rev + ",";
+          rev = rev + i;
+          (+i + 1 > +end) ? rev = rev + "," + blank : rev = rev + "," + (i+1);
+
+
+        }
+
+        document.getElementById("pages_rev").innerHTML = rev;
+
+
+
+        // document.getElementById("demo").innerHTML = text;
+        card.style.display="block";
+
+
+
+      }
+
+
+      function calculate_book(){
+        var card = document.getElementById("instructions");
+
+        var x = document.getElementById("pages");
+
+        var start = x.elements[0].value;
+        var end = x.elements[1].value;
+        var blank = x.elements[2].value;
+
+        var res = +end - +start + 1;
+        res = Math.ceil(res/4);
+        document.getElementById("npage").innerHTML = res;
+        
+
+        // here now
+
+        var pages_front = new Array(res*2);
+        var pages_rev = new Array(res*2);
+        
+        // pages_front[3] = 3;
+        // pages_front[4] = 5;
+        
+        var curr_page = start;
+        for(var i = 1 ; i < res*2 ; i+=2){
+          pages_front[i] = curr_page++;
+          pages_rev[i-1] = curr_page++;
+        }
+
+        // a for backwards here
+        for(var i=res*2-2 ; i>=0 ; i-=2){
+          if(+curr_page > +end){
+            pages_rev[i+1] = blank;
+            // pages_front[i] = blank;  
+            // break;
+          }else
+            pages_rev[i+1] = curr_page++;
+  
+          if(+curr_page > +end){
+            // pages_rev[i] = blank;
+            pages_front[i] = blank;  
+            break;
+          }else
+            pages_front[i] = curr_page++;
+        }
+
+
+
+
+        var front = pages_front[0];
+        var rev = pages_rev[0];
+        for(var i=1 ; i<res*2 ; i++){
+          front+="," + pages_front[i];
+          rev+="," + pages_rev[i];
+        }
+        
+
+
+
+        document.getElementById("pages_rev").innerHTML = rev;
+        document.getElementById("pages_front").innerHTML = front;
+
+
+
+
+
+
+
+
+
+
+
+        card.style.display="block";
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+    <style>
+
+
+      input[type=number] {
+          -moz-appearance:textfield;
+      }
+
+
+      input[type="number"]{
+        /* display: inline; */
+  		  background: rgba(255,255,255,0.1);
+  		  border: none;
+  		  font-size: 30px;
+        text-align: center;
+  		  height: auto;
+  		  margin: 0;
+  		  outline: 0;
+  		  padding: 10px;
+  		  width: 100px;
+  		  background-color: #e8eeef;
+  		  color: #8a97a0;
+  		  box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+  		  margin-bottom: 30px;
+  		}
+
+
+
+      form{
+        /* text-align: center; */
+        display: inline;
+        width: 300px;
+
+        font-family: verdana;
+        font-size: 25px;
+        color: #556677;
+        text-align: center;
+        /* background: grey; */
+      }
+
+      .form_holder{
+        text-align: center;
+        margin: auto;
+        margin-top: 50px;
+        /* background: yellow; */
+        animation: punkgone .25s;
+      }
+
+      .button {
+        margin: auto;
+        border-radius: 4px;
+        background-color: darkslategrey;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-family: verdana;
+        font-size: 28px;
+        padding: 20px;
+        width: 200px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+      }
+
+      .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+
+      .button:hover span {
+        padding-right: 25px;
+      }
+
+      .button:hover span:after {
+        opacity: 1;
+        right: 0;
+      }
+
+      .button_holder{
+        width: 210px;
+        margin: auto;
+        margin-top: 20px;
+        float: left;
+         /*background: blue; */
+      }
+
+      .bookcalc{
+        /*margin-top: 5px;*/
+
+      }
+
+      .super_holder{
+        margin: auto;
+        margin-left: 450px;
+        background-color: #223344;
+      }
+
+
+
+      #instructions{
+        margin-top: 200px;
+        margin-left: 20px;
+        font-family: verdana;
+        font-size: 25px;
+        color: #556677;
+        display: none;
+        animation: appearcard .5s;
+      }
+
+      .res{
+        color: darkviolet;
+      }
+
+      .steps{
+        overflow: auto;
+      }
+
+
+
+      @keyframes appearcard {
+        from{
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to{
+          transform: translateY(0px);
+          opacity: 1;
+        }
+      }
+
+
+
+
+
+
+
+
+
+    </style>
+
+  </head>
+
+
+  <body>
+
+
+
+    <div class="form_holder">
+      <form id="pages">
+        print from page no. <input type="number" name="from" value="0" onclick="this.focus();this.select()">
+        to page no. <input type="number" name="to" value="0" onclick="this.focus();this.select()">
+        & a blank page: <input type="number" name="blank" value="0" onclick="this.focus();this.select()">
+      </form>
+    </div>
+
+    <div class="super_holder">
+      <div class="button_holder">
+        <button class="button" onclick="calculate()"><span>Print </span></button>
+      </div>
+      <div class="button_holder bookcalc">
+        <button class="button" onclick="calculate_book()"><span>Book</span></button>
+      </div>
+  
+    </div>
+    
+
+
+    <div id="instructions">
+      <p class="steps"> take <i id="npage" class="res">778</i> page/s.</p>
+      <p class="steps"> order by <i id="pages_front" class="res" onclick="selectAll('pages')"></i></p>
+      <p class="steps"> then by <i id="pages_rev" class="res" onclick="selectAll('pages_rev')"></i></p>
+
+    </div>
+
+    <!-- <p id="helpme">sdfgdgd</p> -->
+
+
+
+
+  </body>
+</html>
